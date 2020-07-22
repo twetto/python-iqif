@@ -17,12 +17,14 @@ A Python library for the Integer Quadratic Integrate-and-Fire neuron API.
 
 * base-devel (Arch-based packaging)
 
+* pip (Universal installation)
+
 ## Installation
 
 ### Universal installation
 
 ```bash
-python setup.py build
+pip install .
 ```
 
 ### Arch-based installation
