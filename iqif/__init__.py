@@ -189,12 +189,3 @@ class lifnet(object):
     def spike_rate(self, neuron_index):
         return liblif.lif_network_spike_rate(self.obj, neuron_index)
 
-netq = iqnet("inputs/neuronParameter_IQIF_bistable.txt", "inputs/Connection_Table_IQIF_bistable.txt")
-netz = iznet("inputs/neuronParameter_Izhikevich.txt", "inputs/Connection_Table_Izhikevich.txt")
-netl = lifnet("inputs/neuronParameter_LIF.txt", "inputs/Connection_Table_LIF.txt")
-print(netq)
-print(netq.num_neurons())
-print(netz)
-print(netz.num_neurons())
-print(netl)
-print(netl.num_neurons())
