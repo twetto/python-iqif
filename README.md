@@ -3,13 +3,35 @@ A Python library for the Integer Quadratic Integrate-and-Fire neuron API.
 
 ## Dependencies
 
+### Runtime:
+
 * python
 
 * [iq-neuron](https://github.com/twetto/iq-neuron)
 
-### makedepends
+### Buildtime:
 
 * python-setuptools
 
 * python-wheel
+
+* base-devel (Arch-based packaging)
+
+## Installation
+
+### Universal installation
+
+```bash
+python setup.py build
+```
+
+### Arch-based installation
+
+First download the PKGBUILD, goto the working directory, then
+
+```bash
+makepkg -si
+```
+
+Uninstall the package with `sudo pacman -Rs python-iqif`.
 
