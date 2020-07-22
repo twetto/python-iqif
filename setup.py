@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="python-iqif-twetto",
-    version="0.0.2",
+    version="0.0.3",
     author="twetto",
     author_email="franky85912@gmail.com",
     description="A Python library for the Integer Quadratic Integrate-and-Fire neuron API.",
