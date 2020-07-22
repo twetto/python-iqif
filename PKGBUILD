@@ -1,6 +1,6 @@
 # Maintainer: twetto <franky85912@gmail.com>
 pkgname=python-iqif
-pkgver=0.0.3
+pkgver=0.0.4
 pkgrel=1
 pkgdesc="A Python library for the Integer Quadratic Integrate-and-Fire neuron API."
 arch=('any')
