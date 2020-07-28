@@ -27,6 +27,8 @@ A Python library for the Integer Quadratic Integrate-and-Fire neuron API.
 pip install .
 ```
 
+Uninstall the package with `pip uninstall python-iqif-twetto`.
+
 ### Arch-based installation
 
 First download the PKGBUILD, goto the working directory, then
