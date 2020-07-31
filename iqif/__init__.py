@@ -104,7 +104,10 @@ class iznet(object):
         libiz.iz_network_send_synapse.restype = ctypes.c_void_p
 
         libiz.iz_network_set_biascurrent.argtypes = [ctypes.c_void_p, ctypes.c_int, ctypes.c_int]
-        libiz.iz_network_set_biascurrent.restype = ctypes.c_void_p
+        libiz.iz_network_set_biascurrent.restype = ctypes.c_int
+
+        libiz.iz_network_set_weight.argtypes = [ctypes.c_void_p, ctypes.c_int, ctypes.c_int, ctypes.c_float, ctypes.c_int]
+        libiz.iz_network_set_weight.restype = ctypes.c_int
 
         libiz.iz_network_potential.argtypes = [ctypes.c_void_p, ctypes.c_int]
         libiz.iz_network_potential.restype = ctypes.c_float
