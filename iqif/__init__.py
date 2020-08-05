@@ -106,6 +106,9 @@ class iznet(object):
         libiz.iz_network_set_biascurrent.argtypes = [ctypes.c_void_p, ctypes.c_int, ctypes.c_int]
         libiz.iz_network_set_biascurrent.restype = ctypes.c_int
 
+        libiz.iz_network_set_neuron.argtypes = [ctypes.c_void_p, ctypes.c_int, ctypes.c_float, ctypes.c_float, ctypes.c_float, ctypes.c_float, ctypes.c_float, ctypes.c_float, ctypes.c_float, ctypes.c_int]
+        libiz.iz_network_set_neuron.restype = ctypes.c_int
+
         libiz.iz_network_set_weight.argtypes = [ctypes.c_void_p, ctypes.c_int, ctypes.c_int, ctypes.c_float, ctypes.c_int]
         libiz.iz_network_set_weight.restype = ctypes.c_int
 
@@ -133,6 +136,12 @@ class iznet(object):
 
     def set_biascurrent(self, neuron_index, biascurrent):
         return libiz.iz_network_set_biascurrent(self.obj, neuron_index, biascurrent)
+
+    def set_neuron(self, neuron_index, a, b, c, d, k, rest, threshold, noise):
+        return libiz.iz_network_set_neuron(self.obj, neuron_index, a, b, c, d, k, rest, threshold, noise)
+
+    def set_weight(self, pre, post, weight, tau):
+        return libiz.iz_network_set_weight(self.obj, pre, post, weight, tau)
 
     def potential(self, neuron_index):
         return libiz.iz_network_potential(self.obj, neuron_index)
