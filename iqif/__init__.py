@@ -124,6 +124,9 @@ class iznet(object):
         libiz.iz_network_spike_rate.argtypes = [ctypes.c_void_p, ctypes.c_int]
         libiz.iz_network_spike_rate.restype = ctypes.c_float
 
+        libiq.iz_network_set_num_threads.argtypes = [ctypes.c_void_p, ctypes.c_int]
+        libiq.iz_network_set_num_threads.restype = ctypes.c_void_p
+
         b_par = par.encode('utf-8')
         b_con = con.encode('utf-8')
         self.obj = libiz.iz_network_new(b_par, b_con)
@@ -154,6 +157,9 @@ class iznet(object):
 
     def spike_rate(self, neuron_index):
         return libiz.iz_network_spike_rate(self.obj, neuron_index)
+    
+    def set_num_threads(self, num_threads):
+        return libiq.iz_network_set_num_threads(self.obj, num_threads)
 
 class lifnet(object):
     def __init__(self, par, con):
