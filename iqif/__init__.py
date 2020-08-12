@@ -34,7 +34,6 @@ try:
     liblif = ctypes.CDLL(find_library("lif-network"))
 except OSError:
     print("Unable to load lif shared library.")
-    #print("Unable to load iq/iz/lif shared library.")
     sys.exit()
 
 print("All libs loaded. Congrats!")
@@ -53,6 +52,12 @@ class iqnet(object):
 
         libiq.iq_network_set_biascurrent.argtypes = [ctypes.c_void_p, ctypes.c_int, ctypes.c_int]
         libiq.iq_network_set_biascurrent.restype = ctypes.c_void_p
+
+        libiq.iq_network_set_neuron.argtypes = [ctypes.c_void_p, ctypes.c_int, ctypes.c_int, ctypes.c_int, ctypes.c_int, ctypes.c_int, ctypes.c_int, ctypes.c_int]
+        libiq.iq_network_set_neuron.restype = ctypes.c_int
+
+        libiq.iq_network_set_weight.argtypes = [ctypes.c_void_p, ctypes.c_int, ctypes.c_int, ctypes.c_int, ctypes.c_int]
+        libiq.iq_network_set_weight.restype = ctypes.c_int
 
         libiq.iq_network_potential.argtypes = [ctypes.c_void_p, ctypes.c_int]
         libiq.iq_network_potential.restype = ctypes.c_int
@@ -78,6 +83,12 @@ class iqnet(object):
 
     def set_biascurrent(self, neuron_index, biascurrent):
         return libiq.iq_network_set_biascurrent(self.obj, neuron_index, biascurrent)
+
+    def set_neuron(self, neuron_index, rest, threshold, reset, a, b, noise):
+        return libiq.iq_network_set_neuron(self.obj, neuron_index, rest, threshold, reset, a, b, noise)
+
+    def set_weight(self, pre, post, weight, tau):
+        return libiq.iq_network_set_weight(self.obj, pre, post, weight, tau)
 
     def potential(self, neuron_index):
         return libiq.iq_network_potential(self.obj, neuron_index)
@@ -176,6 +187,12 @@ class lifnet(object):
         liblif.lif_network_set_biascurrent.argtypes = [ctypes.c_void_p, ctypes.c_int, ctypes.c_int]
         liblif.lif_network_set_biascurrent.restype = ctypes.c_void_p
 
+        liblif.lif_network_set_neuron.argtypes = [ctypes.c_void_p, ctypes.c_int, ctypes.c_float, ctypes.c_float, ctypes.c_float, ctypes.c_float, ctypes.c_int]
+        liblif.lif_network_set_neuron.restype = ctypes.c_int
+
+        liblif.lif_network_set_weight.argtypes = [ctypes.c_void_p, ctypes.c_int, ctypes.c_int, ctypes.c_float, ctypes.c_int]
+        liblif.lif_network_set_weight.restype = ctypes.c_int
+
         liblif.lif_network_potential.argtypes = [ctypes.c_void_p, ctypes.c_int]
         liblif.lif_network_potential.restype = ctypes.c_float
 
@@ -184,6 +201,9 @@ class lifnet(object):
 
         liblif.lif_network_spike_rate.argtypes = [ctypes.c_void_p, ctypes.c_int]
         liblif.lif_network_spike_rate.restype = ctypes.c_float
+
+        liblif.lif_network_set_num_threads.argtypes = [ctypes.c_void_p, ctypes.c_int]
+        liblif.lif_network_set_num_threads.restype = ctypes.c_void_p
 
         b_par = par.encode('utf-8')
         b_con = con.encode('utf-8')
@@ -198,6 +218,12 @@ class lifnet(object):
     def set_biascurrent(self, neuron_index, biascurrent):
         return liblif.lif_network_set_biascurrent(self.obj, neuron_index, biascurrent)
 
+    def set_neuron(self, neuron_index, g, rest, threshold, reset, noise):
+        return liblif.lif_network_set_neuron(self.obj, neuron_index, g, rest, threshold, reset, noise)
+
+    def set_weight(self, pre, post, weight, tau):
+        return liblif.lif_network_set_weight(self.obj, pre, post, weight, tau)
+
     def potential(self, neuron_index):
         return liblif.lif_network_potential(self.obj, neuron_index)
 
@@ -206,4 +232,7 @@ class lifnet(object):
 
     def spike_rate(self, neuron_index):
         return liblif.lif_network_spike_rate(self.obj, neuron_index)
+
+    def set_num_threads(self, num_threads):
+        return liblif.lif_network_set_num_threads(self.obj, num_threads)
 
