@@ -51,7 +51,7 @@ class iqnet(object):
         libiq.iq_network_send_synapse.restype = ctypes.c_void_p
 
         libiq.iq_network_set_biascurrent.argtypes = [ctypes.c_void_p, ctypes.c_int, ctypes.c_int]
-        libiq.iq_network_set_biascurrent.restype = ctypes.c_void_p
+        libiq.iq_network_set_biascurrent.restype = ctypes.c_int
 
         libiq.iq_network_set_neuron.argtypes = [ctypes.c_void_p, ctypes.c_int, ctypes.c_int, ctypes.c_int, ctypes.c_int, ctypes.c_int, ctypes.c_int, ctypes.c_int]
         libiq.iq_network_set_neuron.restype = ctypes.c_int
@@ -185,7 +185,7 @@ class lifnet(object):
         liblif.lif_network_send_synapse.restype = ctypes.c_void_p
 
         liblif.lif_network_set_biascurrent.argtypes = [ctypes.c_void_p, ctypes.c_int, ctypes.c_float]
-        liblif.lif_network_set_biascurrent.restype = ctypes.c_void_p
+        liblif.lif_network_set_biascurrent.restype = ctypes.c_int
 
         liblif.lif_network_set_neuron.argtypes = [ctypes.c_void_p, ctypes.c_int, ctypes.c_float, ctypes.c_float, ctypes.c_float, ctypes.c_float, ctypes.c_int]
         liblif.lif_network_set_neuron.restype = ctypes.c_int
