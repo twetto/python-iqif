@@ -114,7 +114,7 @@ class iznet(object):
         libiz.iz_network_send_synapse.argtypes = [ctypes.c_void_p]
         libiz.iz_network_send_synapse.restype = ctypes.c_void_p
 
-        libiz.iz_network_set_biascurrent.argtypes = [ctypes.c_void_p, ctypes.c_int, ctypes.c_int]
+        libiz.iz_network_set_biascurrent.argtypes = [ctypes.c_void_p, ctypes.c_int, ctypes.c_float]
         libiz.iz_network_set_biascurrent.restype = ctypes.c_int
 
         libiz.iz_network_set_neuron.argtypes = [ctypes.c_void_p, ctypes.c_int, ctypes.c_float, ctypes.c_float, ctypes.c_float, ctypes.c_float, ctypes.c_float, ctypes.c_float, ctypes.c_float, ctypes.c_int]
@@ -184,7 +184,7 @@ class lifnet(object):
         liblif.lif_network_send_synapse.argtypes = [ctypes.c_void_p]
         liblif.lif_network_send_synapse.restype = ctypes.c_void_p
 
-        liblif.lif_network_set_biascurrent.argtypes = [ctypes.c_void_p, ctypes.c_int, ctypes.c_int]
+        liblif.lif_network_set_biascurrent.argtypes = [ctypes.c_void_p, ctypes.c_int, ctypes.c_float]
         liblif.lif_network_set_biascurrent.restype = ctypes.c_void_p
 
         liblif.lif_network_set_neuron.argtypes = [ctypes.c_void_p, ctypes.c_int, ctypes.c_float, ctypes.c_float, ctypes.c_float, ctypes.c_float, ctypes.c_int]
