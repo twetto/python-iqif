@@ -238,66 +238,66 @@ class lifnet(object):
 
 class ilifnet(object):
     def __init__(self, par, con):
-        #libilif.ilif_network_new.argtypes = None
-        libilif.ilif_network_new.argtypes = [ctypes.c_char_p, ctypes.c_char_p]
-        libilif.ilif_network_new.restype = ctypes.c_void_p
+        #liblif.ilif_network_new.argtypes = None
+        liblif.ilif_network_new.argtypes = [ctypes.c_char_p, ctypes.c_char_p]
+        liblif.ilif_network_new.restype = ctypes.c_void_p
 
-        libilif.ilif_network_num_neurons.argtypes = [ctypes.c_void_p]
-        libilif.ilif_network_num_neurons.restype = ctypes.c_int
+        liblif.ilif_network_num_neurons.argtypes = [ctypes.c_void_p]
+        liblif.ilif_network_num_neurons.restype = ctypes.c_int
 
-        libilif.ilif_network_send_synapse.argtypes = [ctypes.c_void_p]
-        libilif.ilif_network_send_synapse.restype = ctypes.c_void_p
+        liblif.ilif_network_send_synapse.argtypes = [ctypes.c_void_p]
+        liblif.ilif_network_send_synapse.restype = ctypes.c_void_p
 
-        libilif.ilif_network_set_biascurrent.argtypes = [ctypes.c_void_p, ctypes.c_int, ctypes.c_int]
-        libilif.ilif_network_set_biascurrent.restype = ctypes.c_int
+        liblif.ilif_network_set_biascurrent.argtypes = [ctypes.c_void_p, ctypes.c_int, ctypes.c_int]
+        liblif.ilif_network_set_biascurrent.restype = ctypes.c_int
 
-        libilif.ilif_network_set_neuron.argtypes = [ctypes.c_void_p, ctypes.c_int, ctypes.c_int, ctypes.c_int, ctypes.c_int, ctypes.c_int, ctypes.c_int]
-        libilif.ilif_network_set_neuron.restype = ctypes.c_int
+        liblif.ilif_network_set_neuron.argtypes = [ctypes.c_void_p, ctypes.c_int, ctypes.c_int, ctypes.c_int, ctypes.c_int, ctypes.c_int, ctypes.c_int]
+        liblif.ilif_network_set_neuron.restype = ctypes.c_int
 
-        libilif.ilif_network_set_weight.argtypes = [ctypes.c_void_p, ctypes.c_int, ctypes.c_int, ctypes.c_int, ctypes.c_int]
-        libilif.ilif_network_set_weight.restype = ctypes.c_int
+        liblif.ilif_network_set_weight.argtypes = [ctypes.c_void_p, ctypes.c_int, ctypes.c_int, ctypes.c_int, ctypes.c_int]
+        liblif.ilif_network_set_weight.restype = ctypes.c_int
 
-        libilif.ilif_network_potential.argtypes = [ctypes.c_void_p, ctypes.c_int]
-        libilif.ilif_network_potential.restype = ctypes.c_int
+        liblif.ilif_network_potential.argtypes = [ctypes.c_void_p, ctypes.c_int]
+        liblif.ilif_network_potential.restype = ctypes.c_int
 
-        libilif.ilif_network_spike_count.argtypes = [ctypes.c_void_p, ctypes.c_int]
-        libilif.ilif_network_spike_count.restype = ctypes.c_int
+        liblif.ilif_network_spike_count.argtypes = [ctypes.c_void_p, ctypes.c_int]
+        liblif.ilif_network_spike_count.restype = ctypes.c_int
 
-        libilif.ilif_network_spike_rate.argtypes = [ctypes.c_void_p, ctypes.c_int]
-        libilif.ilif_network_spike_rate.restype = ctypes.c_float
+        liblif.ilif_network_spike_rate.argtypes = [ctypes.c_void_p, ctypes.c_int]
+        liblif.ilif_network_spike_rate.restype = ctypes.c_float
 
-        libilif.ilif_network_set_num_threads.argtypes = [ctypes.c_void_p, ctypes.c_int]
-        libilif.ilif_network_set_num_threads.restype = ctypes.c_void_p
+        liblif.ilif_network_set_num_threads.argtypes = [ctypes.c_void_p, ctypes.c_int]
+        liblif.ilif_network_set_num_threads.restype = ctypes.c_void_p
 
         b_par = par.encode('utf-8')
         b_con = con.encode('utf-8')
-        self.obj = libilif.ilif_network_new(b_par, b_con)
+        self.obj = liblif.ilif_network_new(b_par, b_con)
 
     def num_neurons(self):
-        return libilif.ilif_network_num_neurons(self.obj)
+        return liblif.ilif_network_num_neurons(self.obj)
 
     def send_synapse(self):
-        return libilif.ilif_network_send_synapse(self.obj)
+        return liblif.ilif_network_send_synapse(self.obj)
 
     def set_biascurrent(self, neuron_index, biascurrent):
-        return libilif.ilif_network_set_biascurrent(self.obj, neuron_index, biascurrent)
+        return liblif.ilif_network_set_biascurrent(self.obj, neuron_index, biascurrent)
 
     def set_neuron(self, neuron_index, inv_g, rest, threshold, reset, noise):
-        return libilif.ilif_network_set_neuron(self.obj, neuron_index, inv_g, rest, threshold, reset, noise)
+        return liblif.ilif_network_set_neuron(self.obj, neuron_index, inv_g, rest, threshold, reset, noise)
 
     def set_weight(self, pre, post, weight, tau):
-        return libilif.ilif_network_set_weight(self.obj, pre, post, weight, tau)
+        return liblif.ilif_network_set_weight(self.obj, pre, post, weight, tau)
 
     def potential(self, neuron_index):
-        return libilif.ilif_network_potential(self.obj, neuron_index)
+        return liblif.ilif_network_potential(self.obj, neuron_index)
 
     def spike_count(self, neuron_index):
-        return libilif.ilif_network_spike_count(self.obj, neuron_index)
+        return liblif.ilif_network_spike_count(self.obj, neuron_index)
 
     def spike_rate(self, neuron_index):
-        return libilif.ilif_network_spike_rate(self.obj, neuron_index)
+        return liblif.ilif_network_spike_rate(self.obj, neuron_index)
 
     def set_num_threads(self, num_threads):
-        return libilif.ilif_network_set_num_threads(self.obj, num_threads)
+        return liblif.ilif_network_set_num_threads(self.obj, num_threads)
 
 
