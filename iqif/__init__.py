@@ -59,6 +59,9 @@ class iqnet(object):
         libiq.iq_network_set_weight.argtypes = [ctypes.c_void_p, ctypes.c_int, ctypes.c_int, ctypes.c_int, ctypes.c_int]
         libiq.iq_network_set_weight.restype = ctypes.c_int
 
+        libiq.iq_network_set_vmax.argtypes = [ctypes.c_void_p, ctypes.c_int, ctypes.c_int]
+        libiq.iq_network_set_vmax.restype = ctypes.c_int
+
         libiq.iq_network_potential.argtypes = [ctypes.c_void_p, ctypes.c_int]
         libiq.iq_network_potential.restype = ctypes.c_int
 
@@ -89,6 +92,9 @@ class iqnet(object):
 
     def set_weight(self, pre, post, weight, tau):
         return libiq.iq_network_set_weight(self.obj, pre, post, weight, tau)
+
+    def set_vmax(self, neuron_index, vmax):
+        return libiq.iq_network_set_vmax(self.obj, neuron_index, vmax)
 
     def potential(self, neuron_index):
         return libiq.iq_network_potential(self.obj, neuron_index)
