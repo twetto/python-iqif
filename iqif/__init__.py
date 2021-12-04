@@ -62,6 +62,9 @@ class iqnet(object):
         libiq.iq_network_set_vmax.argtypes = [ctypes.c_void_p, ctypes.c_int, ctypes.c_int]
         libiq.iq_network_set_vmax.restype = ctypes.c_int
 
+        libiq.iq_network_set_vmin.argtypes = [ctypes.c_void_p, ctypes.c_int, ctypes.c_int]
+        libiq.iq_network_set_vmin.restype = ctypes.c_int
+
         libiq.iq_network_potential.argtypes = [ctypes.c_void_p, ctypes.c_int]
         libiq.iq_network_potential.restype = ctypes.c_int
 
@@ -96,6 +99,9 @@ class iqnet(object):
     def set_vmax(self, neuron_index, vmax):
         return libiq.iq_network_set_vmax(self.obj, neuron_index, vmax)
 
+    def set_vmin(self, neuron_index, vmin):
+        return libiq.iq_network_set_vmin(self.obj, neuron_index, vmin)
+
     def potential(self, neuron_index):
         return libiq.iq_network_potential(self.obj, neuron_index)
 
@@ -128,6 +134,12 @@ class iznet(object):
 
         libiz.iz_network_set_weight.argtypes = [ctypes.c_void_p, ctypes.c_int, ctypes.c_int, ctypes.c_float, ctypes.c_int]
         libiz.iz_network_set_weight.restype = ctypes.c_int
+
+        libiz.iz_network_set_vmax.argtypes = [ctypes.c_void_p, ctypes.c_int, ctypes.c_float]
+        libiz.iz_network_set_vmax.restype = ctypes.c_int
+
+        libiz.iz_network_set_vmin.argtypes = [ctypes.c_void_p, ctypes.c_int, ctypes.c_float]
+        libiz.iz_network_set_vmin.restype = ctypes.c_int
 
         libiz.iz_network_potential.argtypes = [ctypes.c_void_p, ctypes.c_int]
         libiz.iz_network_potential.restype = ctypes.c_float
@@ -162,6 +174,12 @@ class iznet(object):
 
     def set_weight(self, pre, post, weight, tau):
         return libiz.iz_network_set_weight(self.obj, pre, post, weight, tau)
+
+    def set_vmax(self, neuron_index, vmax):
+        return libiz.iz_network_set_vmax(self.obj, neuron_index, vmax)
+
+    def set_vmin(self, neuron_index, vmin):
+        return libiz.iz_network_set_vmin(self.obj, neuron_index, vmin)
 
     def potential(self, neuron_index):
         return libiz.iz_network_potential(self.obj, neuron_index)
@@ -199,6 +217,12 @@ class lifnet(object):
         liblif.lif_network_set_weight.argtypes = [ctypes.c_void_p, ctypes.c_int, ctypes.c_int, ctypes.c_float, ctypes.c_int]
         liblif.lif_network_set_weight.restype = ctypes.c_int
 
+        liblif.lif_network_set_vmax.argtypes = [ctypes.c_void_p, ctypes.c_int, ctypes.c_float]
+        liblif.lif_network_set_vmax.restype = ctypes.c_int
+
+        liblif.lif_network_set_vmin.argtypes = [ctypes.c_void_p, ctypes.c_int, ctypes.c_float]
+        liblif.lif_network_set_vmin.restype = ctypes.c_int
+
         liblif.lif_network_potential.argtypes = [ctypes.c_void_p, ctypes.c_int]
         liblif.lif_network_potential.restype = ctypes.c_float
 
@@ -229,6 +253,12 @@ class lifnet(object):
 
     def set_weight(self, pre, post, weight, tau):
         return liblif.lif_network_set_weight(self.obj, pre, post, weight, tau)
+
+    def set_vmax(self, neuron_index, vmax):
+        return liblif.lif_network_set_vmax(self.obj, neuron_index, vmax)
+
+    def set_vmin(self, neuron_index, vmin):
+        return liblif.lif_network_set_vmin(self.obj, neuron_index, vmin)
 
     def potential(self, neuron_index):
         return liblif.lif_network_potential(self.obj, neuron_index)
@@ -263,6 +293,12 @@ class ilifnet(object):
         liblif.ilif_network_set_weight.argtypes = [ctypes.c_void_p, ctypes.c_int, ctypes.c_int, ctypes.c_int, ctypes.c_int]
         liblif.ilif_network_set_weight.restype = ctypes.c_int
 
+        liblif.ilif_network_set_vmax.argtypes = [ctypes.c_void_p, ctypes.c_int, ctypes.c_int]
+        liblif.ilif_network_set_vmax.restype = ctypes.c_int
+
+        liblif.ilif_network_set_vmin.argtypes = [ctypes.c_void_p, ctypes.c_int, ctypes.c_int]
+        liblif.ilif_network_set_vmin.restype = ctypes.c_int
+
         liblif.ilif_network_potential.argtypes = [ctypes.c_void_p, ctypes.c_int]
         liblif.ilif_network_potential.restype = ctypes.c_int
 
@@ -293,6 +329,12 @@ class ilifnet(object):
 
     def set_weight(self, pre, post, weight, tau):
         return liblif.ilif_network_set_weight(self.obj, pre, post, weight, tau)
+
+    def set_vmax(self, neuron_index, vmax):
+        return liblif.ilif_network_set_vmax(self.obj, neuron_index, vmax)
+
+    def set_vmin(self, neuron_index, vmin):
+        return liblif.ilif_network_set_vmin(self.obj, neuron_index, vmin)
 
     def potential(self, neuron_index):
         return liblif.ilif_network_potential(self.obj, neuron_index)
