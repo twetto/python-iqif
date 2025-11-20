@@ -74,6 +74,12 @@ class iqnet(object):
         libiq.iq_network_spike_count.argtypes = [ctypes.c_void_p, ctypes.c_int]
         libiq.iq_network_spike_count.restype = ctypes.c_int
 
+        lib.iq_network_get_all_spike_counts.argtypes = [
+            ctypes.c_void_p,
+            np.ctypeslib.ndpointer(dtype=np.int32, flags='C_CONTIGUOUS')
+        ]
+        libiq.iq_network_get_all_spike_counts.restype = None
+
         libiq.iq_network_spike_rate.argtypes = [ctypes.c_void_p, ctypes.c_int]
         libiq.iq_network_spike_rate.restype = ctypes.c_float
 
