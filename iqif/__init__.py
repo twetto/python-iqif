@@ -74,7 +74,7 @@ class iqnet(object):
         libiq.iq_network_spike_count.argtypes = [ctypes.c_void_p, ctypes.c_int]
         libiq.iq_network_spike_count.restype = ctypes.c_int
 
-        lib.iq_network_get_all_spike_counts.argtypes = [
+        libiq.iq_network_get_all_spike_counts.argtypes = [
             ctypes.c_void_p,
             np.ctypeslib.ndpointer(dtype=np.int32, flags='C_CONTIGUOUS')
         ]
@@ -119,6 +119,12 @@ class iqnet(object):
 
     def spike_count(self, neuron_index):
         return libiq.iq_network_spike_count(self.obj, neuron_index)
+
+    def get_all_spike_counts(self):
+        n = self.num_neurons()
+        buffer = np.zeros(n, dtype=np.int32)
+        libiq.iq_network_get_all_spike_counts(self.obj, buffer)
+        return buffer
 
     def spike_rate(self, neuron_index):
         return libiq.iq_network_spike_rate(self.obj, neuron_index)
