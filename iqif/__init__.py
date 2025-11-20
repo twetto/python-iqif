@@ -48,7 +48,7 @@ class iqnet(object):
         libiq.iq_network_num_neurons.restype = ctypes.c_int
 
         libiq.iq_network_send_synapse.argtypes = [ctypes.c_void_p]
-        libiq.iq_network_send_synapse.restype = ctypes.c_void_p
+        libiq.iq_network_send_synapse.restype = None
 
         libiq.iq_network_set_biascurrent.argtypes = [ctypes.c_void_p, ctypes.c_int, ctypes.c_int]
         libiq.iq_network_set_biascurrent.restype = ctypes.c_int
@@ -84,7 +84,7 @@ class iqnet(object):
         libiq.iq_network_spike_rate.restype = ctypes.c_float
 
         libiq.iq_network_set_num_threads.argtypes = [ctypes.c_void_p, ctypes.c_int]
-        libiq.iq_network_set_num_threads.restype = ctypes.c_void_p
+        libiq.iq_network_set_num_threads.restype = None
 
         b_par = par.encode('utf-8')
         b_con = con.encode('utf-8')
