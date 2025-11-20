@@ -7,6 +7,8 @@ A Python library for the Integer Quadratic Integrate-and-Fire neuron API.
 
 * python
 
+* numpy
+
 * [iq-neuron](https://github.com/twetto/iq-neuron)
 
 ### Buildtime:

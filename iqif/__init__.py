@@ -3,6 +3,7 @@ import platform
 import ctypes
 from ctypes.util import find_library
 import sys
+import numpy as np
 
 if platform.system() == "Windows":
     buildFolder = Path("iq-neuron/out/build/x64-Debug")
