@@ -63,6 +63,18 @@ class iqnet(object):
         libiq.iq_network_set_surrogate_tau.argtypes = [ctypes.c_void_p, ctypes.c_int]
         libiq.iq_network_set_surrogate_tau.restype = ctypes.c_int
 
+        libiq.iq_network_set_neuron_surrogate_tau.argtypes = [ctypes.c_void_p, ctypes.c_int, ctypes.c_int]
+        libiq.iq_network_set_neuron_surrogate_tau.restype = ctypes.c_int
+
+        libiq.iq_network_get_neuron_surrogate_tau.argtypes = [ctypes.c_void_p, ctypes.c_int]
+        libiq.iq_network_get_neuron_surrogate_tau.restype = ctypes.c_int
+
+        libiq.iq_network_get_current_accumulator.argtypes = [ctypes.c_void_p, ctypes.c_int]
+        libiq.iq_network_get_current_accumulator.restype = ctypes.c_int
+        
+        libiq.iq_network_get_decay_threshold.argtypes = [ctypes.c_void_p, ctypes.c_int]
+        libiq.iq_network_get_decay_threshold.restype = ctypes.c_int
+
         libiq.iq_network_set_vmax.argtypes = [ctypes.c_void_p, ctypes.c_int, ctypes.c_int]
         libiq.iq_network_set_vmax.restype = ctypes.c_int
 
@@ -106,9 +118,34 @@ class iqnet(object):
     def set_weight(self, pre, post, weight, tau):
         return libiq.iq_network_set_weight(self.obj, pre, post, weight, tau)
 
-    def set_surrogate_tau(self, s_tau):
-        return libiq.iq_network_set_surrogate_tau(self.obj, s_tau)
+    #def set_surrogate_tau(self, s_tau):
+    #    return libiq.iq_network_set_surrogate_tau(self.obj, s_tau)
+    
+    def set_surrogate_tau(self, arg1, arg2=None):
+        """
+        Overloaded method:
+        - set_surrogate_tau(s_tau): Sets global surrogate tau for all neurons.
+        - set_surrogate_tau(neuron_idx, s_tau): Sets surrogate tau for a specific neuron.
+        """
+        if arg2 is None:
+            # Global Set
+            s_tau = arg1
+            return libiq.iq_network_set_surrogate_tau(self.obj, s_tau)
+        else:
+            # Per-Neuron Set
+            neuron_index = arg1
+            s_tau = arg2
+            return libiq.iq_network_set_neuron_surrogate_tau(self.obj, neuron_index, s_tau)
 
+    def get_surrogate_tau(self, neuron_index):
+        return libiq.iq_network_get_neuron_surrogate_tau(self.obj, neuron_index)
+    
+    def get_current_accumulator(self, neuron_index):
+        return libiq.iq_network_get_current_accumulator(self.obj, neuron_index)
+
+    def get_decay_threshold(self, neuron_index):
+        return libiq.iq_network_get_decay_threshold(self.obj, neuron_index)
+    
     def set_vmax(self, neuron_index, vmax):
         return libiq.iq_network_set_vmax(self.obj, neuron_index, vmax)
 
