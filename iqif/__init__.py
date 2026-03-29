@@ -71,7 +71,22 @@ class iqnet(object):
 
         libiq.iq_network_get_current_accumulator.argtypes = [ctypes.c_void_p, ctypes.c_int]
         libiq.iq_network_get_current_accumulator.restype = ctypes.c_int
-        
+
+        libiq.iq_network_set_current_accumulator.argtypes = [ctypes.c_void_p, ctypes.c_int, ctypes.c_int]
+        libiq.iq_network_set_current_accumulator.restype = ctypes.c_int
+
+        libiq.iq_network_get_all_current_accumulators.argtypes = [
+            ctypes.c_void_p,
+            np.ctypeslib.ndpointer(dtype=np.int32, flags='C_CONTIGUOUS')
+        ]
+        libiq.iq_network_get_all_current_accumulators.restype = None
+
+        libiq.iq_network_set_all_current_accumulators.argtypes = [
+            ctypes.c_void_p,
+            np.ctypeslib.ndpointer(dtype=np.int32, flags='C_CONTIGUOUS')
+        ]
+        libiq.iq_network_set_all_current_accumulators.restype = None
+
         libiq.iq_network_get_decay_threshold.argtypes = [ctypes.c_void_p, ctypes.c_int]
         libiq.iq_network_get_decay_threshold.restype = ctypes.c_int
 
@@ -83,6 +98,21 @@ class iqnet(object):
 
         libiq.iq_network_potential.argtypes = [ctypes.c_void_p, ctypes.c_int]
         libiq.iq_network_potential.restype = ctypes.c_int
+
+        libiq.iq_network_set_potential.argtypes = [ctypes.c_void_p, ctypes.c_int, ctypes.c_int]
+        libiq.iq_network_set_potential.restype = ctypes.c_int
+
+        libiq.iq_network_get_is_firing.argtypes = [ctypes.c_void_p, ctypes.c_int]
+        libiq.iq_network_get_is_firing.restype = ctypes.c_int
+
+        libiq.iq_network_set_is_firing.argtypes = [ctypes.c_void_p, ctypes.c_int, ctypes.c_int]
+        libiq.iq_network_set_is_firing.restype = ctypes.c_int
+
+        libiq.iq_network_get_synapse_timer.argtypes = [ctypes.c_void_p, ctypes.c_int]
+        libiq.iq_network_get_synapse_timer.restype = ctypes.c_int
+
+        libiq.iq_network_set_synapse_timer.argtypes = [ctypes.c_void_p, ctypes.c_int, ctypes.c_int]
+        libiq.iq_network_set_synapse_timer.restype = ctypes.c_int
 
         libiq.iq_network_spike_count.argtypes = [ctypes.c_void_p, ctypes.c_int]
         libiq.iq_network_spike_count.restype = ctypes.c_int
@@ -143,6 +173,19 @@ class iqnet(object):
     def get_current_accumulator(self, neuron_index):
         return libiq.iq_network_get_current_accumulator(self.obj, neuron_index)
 
+    def set_current_accumulator(self, neuron_index, value):
+        return libiq.iq_network_set_current_accumulator(self.obj, neuron_index, value)
+
+    def get_all_current_accumulators(self):
+        n = self.num_neurons()
+        buffer = np.zeros(n, dtype=np.int32)
+        libiq.iq_network_get_all_current_accumulators(self.obj, buffer)
+        return buffer
+
+    def set_all_current_accumulators(self, values):
+        arr = np.asarray(values, dtype=np.int32)
+        libiq.iq_network_set_all_current_accumulators(self.obj, arr)
+
     def get_decay_threshold(self, neuron_index):
         return libiq.iq_network_get_decay_threshold(self.obj, neuron_index)
     
@@ -154,6 +197,21 @@ class iqnet(object):
 
     def potential(self, neuron_index):
         return libiq.iq_network_potential(self.obj, neuron_index)
+
+    def set_potential(self, neuron_index, value):
+        return libiq.iq_network_set_potential(self.obj, neuron_index, value)
+
+    def get_is_firing(self, neuron_index):
+        return libiq.iq_network_get_is_firing(self.obj, neuron_index)
+
+    def set_is_firing(self, neuron_index, value):
+        return libiq.iq_network_set_is_firing(self.obj, neuron_index, value)
+
+    def get_synapse_timer(self, neuron_index):
+        return libiq.iq_network_get_synapse_timer(self.obj, neuron_index)
+
+    def set_synapse_timer(self, neuron_index, value):
+        return libiq.iq_network_set_synapse_timer(self.obj, neuron_index, value)
 
     def spike_count(self, neuron_index):
         return libiq.iq_network_spike_count(self.obj, neuron_index)
