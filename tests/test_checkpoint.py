@@ -19,74 +19,9 @@ Setup (deterministic -- noise=0 -> rand()%1==0):
 
 import os
 import sys
-import ctypes
 import tempfile
 import numpy as np
-from ctypes import c_void_p, c_int, c_float, c_char_p, POINTER
-
-# ---------------------------------------------------------------------------
-# 1. Locate the shared library
-# ---------------------------------------------------------------------------
-LIB_SEARCH_PATHS = [
-    "./build/libiq-network.so",
-    "../build/libiq-network.so",
-    "/usr/local/lib/libiq-network.so",
-    "/usr/lib/libiq-network.so",
-]
-
-lib_path = None
-for p in LIB_SEARCH_PATHS:
-    if os.path.isfile(p):
-        lib_path = p
-        break
-
-if lib_path is None:
-    print("ERROR: libiq-network.so not found. Searched:")
-    for p in LIB_SEARCH_PATHS:
-        print(f"  {p}")
-    print("Build the library first, or set lib_path manually.")
-    sys.exit(1)
-
-print(f"Loading library: {lib_path}")
-lib = ctypes.CDLL(lib_path)
-
-# ---------------------------------------------------------------------------
-# 2. Declare ctypes signatures
-# ---------------------------------------------------------------------------
-lib.iq_network_new.argtypes = [c_char_p, c_char_p]
-lib.iq_network_new.restype = c_void_p
-lib.iq_network_delete.argtypes = [c_void_p]
-lib.iq_network_delete.restype = None
-lib.iq_network_num_neurons.argtypes = [c_void_p]
-lib.iq_network_num_neurons.restype = c_int
-lib.iq_network_send_synapse.argtypes = [c_void_p]
-lib.iq_network_send_synapse.restype = None
-lib.iq_network_set_biascurrent.argtypes = [c_void_p, c_int, c_int]
-lib.iq_network_set_biascurrent.restype = c_int
-
-# Potential
-lib.iq_network_potential.argtypes = [c_void_p, c_int]
-lib.iq_network_potential.restype = c_int
-lib.iq_network_set_potential.argtypes = [c_void_p, c_int, c_int]
-lib.iq_network_set_potential.restype = c_int
-
-# Is-firing
-lib.iq_network_get_is_firing.argtypes = [c_void_p, c_int]
-lib.iq_network_get_is_firing.restype = c_int
-lib.iq_network_set_is_firing.argtypes = [c_void_p, c_int, c_int]
-lib.iq_network_set_is_firing.restype = c_int
-
-# Current accumulator
-lib.iq_network_get_current_accumulator.argtypes = [c_void_p, c_int]
-lib.iq_network_get_current_accumulator.restype = c_int
-lib.iq_network_set_current_accumulator.argtypes = [c_void_p, c_int, c_int]
-lib.iq_network_set_current_accumulator.restype = c_int
-
-# Synapse timer
-lib.iq_network_get_synapse_timer.argtypes = [c_void_p, c_int]
-lib.iq_network_get_synapse_timer.restype = c_int
-lib.iq_network_set_synapse_timer.argtypes = [c_void_p, c_int, c_int]
-lib.iq_network_set_synapse_timer.restype = c_int
+from iqif import iqnet
 
 # ---------------------------------------------------------------------------
 # 3. Create temporary config files
@@ -104,11 +39,7 @@ with open(con_path, "w") as f:
     f.write("0 1 10 32\n")
     f.write("1 0 -5 64\n")
 
-b_par = par_path.encode()
-b_con = con_path.encode()
-
 TOTAL_STEPS = 100
-#CHECKPOINT_STEP = 30
 CHECKPOINT_STEP = 64
 NUM_NEURONS = 2
 
@@ -117,38 +48,32 @@ NUM_NEURONS = 2
 # ---------------------------------------------------------------------------
 print(f"\n=== Running network A for {TOTAL_STEPS} steps, checkpoint at step {CHECKPOINT_STEP} ===")
 
-net_a = lib.iq_network_new(b_par, b_con)
-lib.iq_network_set_biascurrent(net_a, 0, 13)
-lib.iq_network_set_biascurrent(net_a, 1, 12)
+net_a = iqnet(par_path, con_path)
+net_a.set_biascurrent(0, 13)
+net_a.set_biascurrent(1, 12)
 
-# Record potentials at every step
 potentials_a = np.zeros((TOTAL_STEPS, NUM_NEURONS), dtype=np.int32)
-
-# Snapshot storage
 snapshot = {}
 
 for t in range(TOTAL_STEPS):
-    lib.iq_network_send_synapse(net_a)
+    net_a.send_synapse()
 
     for idx in range(NUM_NEURONS):
-        potentials_a[t, idx] = lib.iq_network_potential(net_a, idx)
+        potentials_a[t, idx] = net_a.potential(idx)
 
-    # Snapshot AFTER step completes
-    if t == CHECKPOINT_STEP - 1:  # after step 30 (0-indexed: t=29)
+    if t == CHECKPOINT_STEP - 1:
         print(f"  Snapshotting at t={t} (after step {t+1})...")
         for idx in range(NUM_NEURONS):
             snapshot[idx] = {
-                "potential": lib.iq_network_potential(net_a, idx),
-                "is_firing": lib.iq_network_get_is_firing(net_a, idx),
-                "current_acc": lib.iq_network_get_current_accumulator(net_a, idx),
-                "syn_timer": lib.iq_network_get_synapse_timer(net_a, idx),
+                "potential": net_a.potential(idx),
+                "is_firing": net_a.get_is_firing(idx),
+                "current_acc": net_a.get_current_accumulator(idx),
+                "syn_timer": net_a.get_synapse_timer(idx),
             }
             print(f"    N{idx}: V={snapshot[idx]['potential']}  "
                   f"firing={snapshot[idx]['is_firing']}  "
                   f"acc={snapshot[idx]['current_acc']}  "
                   f"timer={snapshot[idx]['syn_timer']}")
-
-lib.iq_network_delete(net_a)
 
 # ---------------------------------------------------------------------------
 # 5. Create network B, restore snapshot, run remaining steps
@@ -156,27 +81,25 @@ lib.iq_network_delete(net_a)
 remaining = TOTAL_STEPS - CHECKPOINT_STEP
 print(f"\n=== Restoring snapshot into network B, running {remaining} steps ===")
 
-net_b = lib.iq_network_new(b_par, b_con)
-lib.iq_network_set_biascurrent(net_b, 0, 13)
-lib.iq_network_set_biascurrent(net_b, 1, 12)
+net_b = iqnet(par_path, con_path)
+net_b.set_biascurrent(0, 13)
+net_b.set_biascurrent(1, 12)
 
 # Restore state
 for idx in range(NUM_NEURONS):
     s = snapshot[idx]
-    lib.iq_network_set_potential(net_b, idx, s["potential"])
-    lib.iq_network_set_is_firing(net_b, idx, s["is_firing"])
-    lib.iq_network_set_current_accumulator(net_b, idx, s["current_acc"])
-    lib.iq_network_set_synapse_timer(net_b, idx, s["syn_timer"])
+    net_b.set_potential(idx, s["potential"])
+    net_b.set_is_firing(idx, s["is_firing"])
+    net_b.set_current_accumulator(idx, s["current_acc"])
+    net_b.set_synapse_timer(idx, s["syn_timer"])
 
 # Run and record
 potentials_b = np.zeros((remaining, NUM_NEURONS), dtype=np.int32)
 
 for t in range(remaining):
-    lib.iq_network_send_synapse(net_b)
+    net_b.send_synapse()
     for idx in range(NUM_NEURONS):
-        potentials_b[t, idx] = lib.iq_network_potential(net_b, idx)
-
-lib.iq_network_delete(net_b)
+        potentials_b[t, idx] = net_b.potential(idx)
 
 # ---------------------------------------------------------------------------
 # 6. Compare
